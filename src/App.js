@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { asyncPreloadProcess } from './states/authUser/action';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import DetailPage from './pages/DetailPage';
+import AddThreadPage from './pages/AddThreadPage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import Navbar from './components/Navbar';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
+  const dispatch = useDispatch();
+  const authUser = useSelector((state) => state.authUser);
+
+  useEffect(() => {
+    dispatch(asyncPreloadProcess());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {!authUser ? (
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<LoginPage />} />
+        </Routes>
+      ) : (
+        <>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/threads/:id" element={<DetailPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/add" element={<AddThreadPage />} />
+          </Routes>
+        </>
+      )}
+    </BrowserRouter>
   );
 }
 
