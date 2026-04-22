@@ -78,4 +78,8 @@ describe("LoginPage component", () => {
     expect(mockDispatch).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith("/");
   });
+
+  it("dummy test for CI error", () => {
+    expect(true).toBe(false);
+  });
 });
