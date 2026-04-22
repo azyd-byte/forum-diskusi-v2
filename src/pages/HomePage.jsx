@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   asyncReceiveThreads,
@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import LoadingBar from "../components/LoadingBar.jsx";
 import { asyncReceiveUsers } from "../states/users/action.js";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
+import DOMPurify from "dompurify";
+import { formatTime } from "../utils/formatTime.js";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -17,47 +19,39 @@ function HomePage() {
   const authUser = useSelector((state) => state.authUser);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
+  const purify = useMemo(() => DOMPurify(window), []);
 
   const categories = [
     "all",
     ...new Set(threads.map((thread) => thread.category)),
   ];
 
-  const formatTime = (date) => {
-    const diffInSeconds = Math.floor((new Date() - new Date(date)) / 1000);
-
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds} detik lalu`;
-    }
-
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} menit lalu`;
-    }
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) {
-      return `${diffInHours} jam lalu`;
-    }
-
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} hari lalu`;
-  };
-
-  const filteredThreads =
-    selectedCategory === "all"
+  const filteredThreads = useMemo(() => {
+    return selectedCategory === "all"
       ? threads
       : threads.filter((thread) => thread.category === selectedCategory);
+  }, [threads, selectedCategory]);
 
-  const threadsWithOwner = filteredThreads.map((thread) => {
-    const user = users.find((u) => u.id === thread.ownerId);
+  const usersMap = useMemo(() => {
+    const map = {};
+    users.forEach((user) => {
+      map[user.id] = user;
+    });
+    return map;
+  }, [users]);
 
-    return {
-      ...thread,
-      ownerName: user?.name,
-      ownerAvatar: user?.avatar,
-    };
-  });
+  const threadsWithOwner = useMemo(() => {
+    return filteredThreads.map((thread) => {
+      const user = usersMap[thread.ownerId];
+
+      return {
+        ...thread,
+        ownerName: user?.name,
+        ownerAvatar: user?.avatar,
+        safeBody: purify.sanitize(thread.body),
+      };
+    });
+  }, [filteredThreads, usersMap, purify]);
 
   useEffect(() => {
     async function fetchData() {
@@ -120,7 +114,7 @@ function HomePage() {
                 {/* BODY */}
                 <div
                   className="text-sm text-gray-600 mt-2 line-clamp-3 whitespace-pre-line"
-                  dangerouslySetInnerHTML={{ __html: thread.body }}
+                  dangerouslySetInnerHTML={{ __html: thread.safeBody }}
                 />
 
                 {/* FOOTER */}
