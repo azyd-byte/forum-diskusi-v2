@@ -7,13 +7,6 @@ jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
 }));
 
-// jest.mock("react-router-dom", () => {
-//   return {
-//     useNavigate: () => jest.fn(),
-//     Link: ({ children }) => children,
-//   };
-// });
-
 /**
  * test scenarios for LoginPage
  *
@@ -78,4 +71,8 @@ describe("LoginPage component", () => {
     expect(mockDispatch).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith("/");
   });
+
+  // it("dummy test for CI error", () => {
+  //   expect(true).toBe(false);
+  // });
 });
