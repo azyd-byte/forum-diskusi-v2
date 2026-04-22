@@ -14,7 +14,7 @@ function Navbar() {
     <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
       <div className="max-w-2xl mx-auto flex justify-between items-center p-3">
         <Link to="/" className="font-bold text-lg text-blue-600">
-          Forum App Dicoding
+          Forum Diskusi Dicoding
         </Link>
 
         <div className="flex gap-4 text-sm">
