@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import LoginPage from "./LoginPage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
 }));
+
+jest.mock("react-router-dom");
 
 /**
  * test scenarios for LoginPage
@@ -51,7 +53,7 @@ describe("LoginPage component", () => {
     expect(passwordInput.value).toBe("123456");
   });
 
-  it("should call dispatch and navigate when form submitted", () => {
+  it("should call dispatch and navigate when form submitted", async () => {
     render(<LoginPage />);
 
     const emailInput = screen.getByPlaceholderText("Email");
@@ -66,10 +68,13 @@ describe("LoginPage component", () => {
       target: { value: "123456" },
     });
 
-    fireEvent.click(button);
+    // fireEvent.click(button);
+    fireEvent.submit(button.closest("form"));
 
-    expect(mockDispatch).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith("/");
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith("/");
+    });
   });
 
   // it("dummy test for CI error", () => {
