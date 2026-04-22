@@ -12,6 +12,8 @@ import {
   asyncToggleUpVoteThread,
 } from "../states/threads/action";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
+import DOMPurify from "dompurify";
+import { formatTime } from "../utils/formatTime";
 
 function DetailPage() {
   const { id } = useParams();
@@ -21,27 +23,6 @@ function DetailPage() {
   const authUser = useSelector((state) => state.authUser);
   const isUpVoted = thread?.upVotesBy?.includes(authUser?.id);
   const isDownVoted = thread?.downVotesBy?.includes(authUser?.id);
-
-  const formatTime = (date) => {
-    const diffInSeconds = Math.floor((new Date() - new Date(date)) / 1000);
-
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds} detik lalu`;
-    }
-
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} menit lalu`;
-    }
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) {
-      return `${diffInHours} jam lalu`;
-    }
-
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} hari lalu`;
-  };
 
   function onSubmit(e) {
     e.preventDefault();
@@ -68,7 +49,7 @@ function DetailPage() {
           <div
             className="text-sm text-gray-600 mt-2"
             dangerouslySetInnerHTML={{
-              __html: thread.body.replace(/\n/g, "<br />"),
+              __html: DOMPurify.sanitize(thread.body).replace(/\n/g, "<br />"),
             }}
           />
 
@@ -186,7 +167,10 @@ function DetailPage() {
                 <div
                   className="text-sm text-gray-700"
                   dangerouslySetInnerHTML={{
-                    __html: comment.content.replace(/\n/g, "<br />"),
+                    __html: DOMPurify.sanitize(comment.content).replace(
+                      /\n/g,
+                      "<br />",
+                    ),
                   }}
                 />
 
