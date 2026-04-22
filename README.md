@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# Forum App - React Web Developer Expert
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplikasi forum diskusi berbasis React yang memungkinkan pengguna untuk membuat thread, memberikan komentar, serta melakukan voting (upvote/downvote).
 
-## Available Scripts
+Project ini dikembangkan sebagai submission pada kelas **Menjadi React Web Developer Expert**.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Fitur Utama
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 🔐 Autentikasi pengguna (login)
+- 🧵 Melihat daftar thread
+- 🏷️ Filter thread berdasarkan kategori
+- 👍 Upvote & 👎 Downvote thread
+- 💬 Menambahkan komentar pada thread
+- 👍👎 Voting pada komentar
+- ⏱️ Format waktu relatif (misal: "5 menit lalu")
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React.js
+- Redux (State Management)
+- React Router
+- Tailwind CSS
+- REST API (Dicoding Forum API)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📁 Struktur Folder
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+├── components/
+├── pages/
+├── states/        # Redux (actions, reducers, thunks)
+├── utils/         # helper functions (formatTime, dll)
+├── styles/
+└── App.jsx
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Instalasi & Menjalankan Project
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+npm install
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Aplikasi akan berjalan di:
+http://localhost:3000
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Optimasi Performa
 
-## Learn More
+- Menggunakan useMemo untuk menghindari kalkulasi ulang
+- Menggunakan object lookup (usersMap) untuk performa lebih baik
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🔒 Keamanan (XSS Protection)
 
-### Code Splitting
+- Menggunakan DOMPurify untuk sanitasi HTML
+- Semua dangerouslySetInnerHTML sudah melalui sanitasi
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 💡 Catatan Pengembangan
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Separation of concerns
+- Utility function dipisahkan ke folder utils
+- Struktur modular
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Author
 
-### Advanced Configuration
+Dikembangkan oleh Zayadi
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🌐 Live Demo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Aplikasi dapat diakses secara langsung melalui link berikut:
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[Forum Diskusi App](https://forum-diskusi-v2.vercel.app/)
